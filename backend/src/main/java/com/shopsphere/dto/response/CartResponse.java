@@ -15,6 +15,7 @@ import java.util.List;
 public class CartResponse {
     private Long id;
     private List<CartItemResponse> items;
+    private List<CartItemResponse> savedItems;  
     private BigDecimal subtotal;
     private Integer totalItems;
 }

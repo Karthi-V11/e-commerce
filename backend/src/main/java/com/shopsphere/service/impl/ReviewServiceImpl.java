@@ -47,7 +47,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = Review.builder()
                 .product(product)
                 .user(user)
-                .rating(request.getRating())
+                .rating(request.getRating().shortValue())
                 .title(request.getTitle())
                 .comment(request.getComment())
                 .verifiedPurchase(false) // could be derived from OrderItemRepository in a fuller implementation

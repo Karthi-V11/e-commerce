@@ -1,12 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axiosClient from '../../api/axiosClient'
 
+function extractErrorMessage(err, fallback) {
+  if (err.response) {
+    // Backend responded — use its message (validation error, bad credentials, etc.)
+    return err.response.data?.message || `${fallback} (server responded ${err.response.status})`
+  }
+  if (err.request) {
+    // Request was sent but no response came back — almost always CORS or backend not running.
+    console.error('No response from backend. Check: (1) backend running on the expected port, ' +
+      '(2) VITE_API_BASE_URL matches it, (3) CORS_ORIGINS on the backend includes this origin.', err)
+    return `${fallback}: could not reach the server. Is the backend running? (See console for details.)`
+  }
+  console.error(err)
+  return `${fallback}: ${err.message}`
+}
+
 export const login = createAsyncThunk('auth/login', async (payload, { rejectWithValue }) => {
   try {
     const { data } = await axiosClient.post('/auth/login', payload)
     return data
   } catch (err) {
-    return rejectWithValue(err.response?.data?.message || 'Login failed')
+    return rejectWithValue(extractErrorMessage(err, 'Login failed'))
   }
 })
 
@@ -15,8 +30,17 @@ export const register = createAsyncThunk('auth/register', async (payload, { reje
     const { data } = await axiosClient.post('/auth/register', payload)
     return data
   } catch (err) {
-    return rejectWithValue(err.response?.data?.message || 'Registration failed')
+    return rejectWithValue(extractErrorMessage(err, 'Registration failed'))
   }
+})
+
+export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { rejectWithValue }) => {
+  try {
+    await axiosClient.post('/auth/logout')
+  } catch (err) {
+    // Even if the server call fails (e.g. token already expired), we still clear locally.
+  }
+  return true
 })
 
 const persisted = {

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Search, Heart, ShoppingCart, Bell, User, Moon, Sun, Menu } from 'lucide-react'
 import { toggleDarkMode } from '../../app/uiSlice'
-import { logout } from '../../features/auth/authSlice'
+import { logoutUser } from '../../features/auth/authSlice'
 
 export default function Navbar() {
   const dispatch = useDispatch()
@@ -72,7 +72,7 @@ export default function Navbar() {
             )}
             {user && (
               <button
-                onClick={() => { dispatch(logout()); navigate('/') }}
+                onClick={() => { dispatch(logoutUser()); navigate('/') }}
                 className="text-sm font-medium text-gray-500 hover:text-red-600 px-2"
               >
                 Logout

@@ -6,8 +6,12 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reviews", uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "user_id"}))
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Table(name = "reviews", uniqueConstraints = @UniqueConstraint(columnNames = { "product_id", "user_id" }))
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Review {
 
     @Id
@@ -23,7 +27,7 @@ public class Review {
     private User user;
 
     @Column(nullable = false)
-    private Integer rating;
+    private Short rating;
 
     private String title;
 

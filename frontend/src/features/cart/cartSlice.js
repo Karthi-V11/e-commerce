@@ -21,10 +21,16 @@ export const removeCartItem = createAsyncThunk('cart/remove', async (itemId) => 
   return data
 })
 
+export const setSavedForLater = createAsyncThunk('cart/saveForLater', async ({ itemId, saved }) => {
+  const { data } = await axiosClient.patch(`/cart/items/${itemId}/save-for-later?saved=${saved}`)
+  return data
+})
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     items: [],
+    savedItems: [],
     subtotal: 0,
     totalItems: 0,
     status: 'idle'
@@ -32,10 +38,11 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addMatcher(
-      (a) => [fetchCart.fulfilled, addToCart.fulfilled, updateCartItem.fulfilled, removeCartItem.fulfilled]
+      (a) => [fetchCart.fulfilled, addToCart.fulfilled, updateCartItem.fulfilled, removeCartItem.fulfilled, setSavedForLater.fulfilled]
         .map((t) => t.type).includes(a.type),
       (state, action) => {
         state.items = action.payload.items
+        state.savedItems = action.payload.savedItems
         state.subtotal = action.payload.subtotal
         state.totalItems = action.payload.totalItems
         state.status = 'succeeded'

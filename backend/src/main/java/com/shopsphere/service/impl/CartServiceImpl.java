@@ -121,8 +121,25 @@ public class CartServiceImpl implements CartService {
     }
 
     private CartResponse toResponse(Cart cart) {
-        List<CartItemResponse> items = cart.getItems().stream()
-                .filter(i -> !i.isSavedForLater())
+        List<CartItemResponse> items = mapItems(cart, false);
+        List<CartItemResponse> savedItems = mapItems(cart, true);
+
+        BigDecimal subtotal = items.stream().map(CartItemResponse::getLineTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        int totalItems = items.stream().mapToInt(CartItemResponse::getQuantity).sum();
+
+        return CartResponse.builder()
+                .id(cart.getId())
+                .items(items)
+                .savedItems(savedItems)
+                .subtotal(subtotal)
+                .totalItems(totalItems)
+                .build();
+    }
+
+    private List<CartItemResponse> mapItems(Cart cart, boolean savedForLater) {
+        return cart.getItems().stream()
+                .filter(i -> i.isSavedForLater() == savedForLater)
                 .map(i -> {
                     BigDecimal unitPrice = i.getProduct().getDiscountPrice() != null
                             ? i.getProduct().getDiscountPrice() : i.getProduct().getPrice();
@@ -141,16 +158,5 @@ public class CartServiceImpl implements CartService {
                             .availableStock(i.getProduct().getStockQuantity())
                             .build();
                 }).toList();
-
-        BigDecimal subtotal = items.stream().map(CartItemResponse::getLineTotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        int totalItems = items.stream().mapToInt(CartItemResponse::getQuantity).sum();
-
-        return CartResponse.builder()
-                .id(cart.getId())
-                .items(items)
-                .subtotal(subtotal)
-                .totalItems(totalItems)
-                .build();
     }
 }

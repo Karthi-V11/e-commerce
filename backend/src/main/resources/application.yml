@@ -1,3 +1,67 @@
+# server:
+#   port: 8080
+#   servlet:
+#     context-path: /api
+
+# spring:
+#   application:
+#     name: shopsphere-backend
+
+#   datasource:
+#     # url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:shopsphere}
+#     # username: ${DB_USER:shopsphere}
+#     # password: ${DB_PASSWORD:postgres}
+#     # driver-class-name: org.postgresql.
+
+#     url: jdbc:postgresql://localhost:5432/shopsphere
+#     username: postgres
+#     password: postgres
+#     driver-class-name: org.postgresql.Driver
+    
+#     # url: jdbc:postgresql://localhost:5432/shopsphere
+#     # username: postgres
+#     # password: postgres
+
+#   jpa:
+#     hibernate:
+#       ddl-auto: validate
+#     show-sql: false
+#     properties:
+#       hibernate:
+#         format_sql: true
+#         dialect: org.hibernate.dialect.PostgreSQLDialect
+#     open-in-view: false
+
+#   flyway:
+#     enabled: true
+#     locations: classpath:db/migration
+#     baseline-on-migrate: true
+
+#   servlet:
+#     multipart:
+#       max-file-size: 10MB
+#       max-request-size: 10MB
+
+# app:
+#   jwt:
+#     secret: ${JWT_SECRET:c2hvcHNwaGVyZS1zdXBlci1zZWNyZXQta2V5LWNoYW5nZS1pbi1wcm9kdWN0aW9uLTIwMjY=}
+#     access-token-expiration-ms: 900000        # 15 minutes
+#     refresh-token-expiration-ms: 604800000    # 7 days
+#   cors:
+#     allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+
+# springdoc:
+#   api-docs:
+#     path: /v3/api-docs
+#   swagger-ui:
+#     path: /swagger-ui.html
+
+# logging:
+#   level:
+#     com.shopsphere: INFO
+#     org.springframework.security: WARN
+
+
 server:
   port: 8080
   servlet:
@@ -7,11 +71,17 @@ spring:
   application:
     name: shopsphere-backend
 
+  # datasource:
+  #   url: jdbc:postgresql://localhost:5432/shopsphere
+  #   username: postgres
+  #   password: postgres
+  #   driver-class-name: org.postgresql.
+  
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:shopsphere}
-    username: ${DB_USER:shopsphere}
-    password: ${DB_PASSWORD:shopsphere}
-    driver-class-name: org.postgresql.Driver
+  url: jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:shopsphere}
+  username: ${DB_USER:postgres}
+  password: ${DB_PASSWORD:postgres}
+  driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -36,10 +106,10 @@ spring:
 app:
   jwt:
     secret: ${JWT_SECRET:c2hvcHNwaGVyZS1zdXBlci1zZWNyZXQta2V5LWNoYW5nZS1pbi1wcm9kdWN0aW9uLTIwMjY=}
-    access-token-expiration-ms: 900000        # 15 minutes
-    refresh-token-expiration-ms: 604800000    # 7 days
+    access-token-expiration-ms: 900000
+    refresh-token-expiration-ms: 604800000
   cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173, https://cuddly-space-invader-5173.app.github.dev}
 
 springdoc:
   api-docs:
