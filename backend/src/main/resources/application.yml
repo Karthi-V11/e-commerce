@@ -78,10 +78,10 @@ spring:
   #   driver-class-name: org.postgresql.
   
   datasource:
-  url: jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:shopsphere}
-  username: ${DB_USER:postgres}
-  password: ${DB_PASSWORD:postgres}
-  driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:shopsphere}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -120,4 +120,5 @@ springdoc:
 logging:
   level:
     com.shopsphere: INFO
-    org.springframework.security: WARN
+    org.springframework.security: 
+    org.springframework.boot.context.config: DEBUG
